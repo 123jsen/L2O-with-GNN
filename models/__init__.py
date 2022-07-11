@@ -1,0 +1,1 @@
+from models.mnist_simple import simple_NN
