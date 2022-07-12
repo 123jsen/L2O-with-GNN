@@ -1,1 +1,1 @@
-from models.mnist_simple import simple_NN
+from models.mnist_simple import simple_testing_NN, simple_training_NN
