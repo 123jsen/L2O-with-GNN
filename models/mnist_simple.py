@@ -3,6 +3,9 @@ from torch.nn import functional as F
 from torch import nn as nn
 
 class simple_training_NN(nn.Module):
+    '''
+    NN with Single Hidden Layer (32 nodes) for meta-training LSTM optimizer
+    '''
     def __init__(self):
         super(simple_training_NN, self).__init__()
         self.flatten = nn.Flatten()
@@ -19,6 +22,9 @@ class simple_training_NN(nn.Module):
         return x
 
 class simple_testing_NN(nn.Module):
+    '''
+    NN with Two Hidden Layer (64 nodes each) for testing LSTM optimizer for generalizability
+    '''
     def __init__(self):
         super(simple_testing_NN, self).__init__()
         self.flatten = nn.Flatten()
