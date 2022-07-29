@@ -16,26 +16,26 @@ class gd_l2o_weight(nn.Module):
 class lstm_l2o_optimizer(nn.Module):
     def __init__(self):
         super(lstm_l2o_optimizer, self).__init__()
-        self.LSTM = nn.LSTM(1, 24)    # gradient is the sole input
+        self.LSTM = nn.LSTM(1, 24, num_layers=2)    # gradient is the sole input
         self.linear = nn.Linear(24, 1)
     
     def forward(self, x, h_in):
         out, h_out = self.LSTM(x, h_in)
-        return x * self.linear(out), h_out
+        out = self.linear(out)
+        return x * out, h_out
 
-SCALE = 2
-
-# WORK IN PROGRESS
-'''l2o Recurrent GNN model'''
+'''l2o Recurrent GNN model. The diffused output state is not kept'''
 class gnn_l2o_optimizer(nn.Module):
     def __init__(self):
         super(lstm_l2o_optimizer, self).__init__()
         self.LSTM = nn.LSTM(1, 24)    # gradient is the sole input
-        self.conv = GCNConv(24, 24)
+                                        # For LSTMs, h_out and out are equal
+        self.graph_conv = GCNConv(24, 24)
         self.linear = nn.Linear(24, 1)
     
     # h is short term hidden state, c is long term cell state
-    def forward(self, x, state_in):
-        h_in, c_in = state_in
-        out, (h_out, c_out) = self.LSTM(x, (h_in, c_in))
-        return SCALE * x * self.linear(out), (h_out, c_out)
+    def forward(self, x, h):
+        out, h = self.LSTM(x, h)
+        out = self.graph_conv(out)
+        out = self.linear(out)
+        return x * out, h
