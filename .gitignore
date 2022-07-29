@@ -130,3 +130,9 @@ dmypy.json
 
 # Downloaded datasets
 data/
+
+# Trained model
+/trained_model
+
+# Testing
+test*.ipynb
