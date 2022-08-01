@@ -24,9 +24,9 @@ class deep_net(nn.Module):
     def __init__(self, inputNum, outputNum):
         super(deep_net, self).__init__()
         self.flatten = nn.Flatten()
-        self.layer1 = nn.Linear(inputNum, 32)
-        self.layer2 = nn.Linear(32, 32)
-        self.layer3 = nn.Linear(32, outputNum)
+        self.layer1 = nn.Linear(inputNum, 64)
+        self.layer2 = nn.Linear(64, 64)
+        self.layer3 = nn.Linear(64, outputNum)
 
     def forward(self, x):
         x = self.flatten(x)

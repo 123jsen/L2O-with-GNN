@@ -32,7 +32,7 @@ def make_offsets(num_nodes_list):
         
     return list
 
-def network_to_edge(nlist, transpose=True):
+def network_to_edge(nlist, undirected=True, transpose=True):
     '''Produces PyG adjacency list from list of neuron count, see documentation for shape'''
     offsets = make_offsets(nlist)
     edge_index = torch.empty(0, dtype=torch.long)
@@ -54,6 +54,9 @@ def network_to_edge(nlist, transpose=True):
                 new_edge = torch.tensor([[offsets[2 * i - 2] + k + j * nlist[i-1], offsets[2 * i - 3] + k]], dtype=torch.long)
                 edge_index = torch.cat((edge_index, new_edge))
 
+    if undirected:
+        edge2 = torch.flip(edge_index, dims=(0, 1))
+        edge_index = torch.cat((edge_index, edge2))
 
     if transpose:
         edge_index = edge_index.T

@@ -136,3 +136,6 @@ data/
 
 # Testing
 test*.ipynb
+
+# Results
+/charts
