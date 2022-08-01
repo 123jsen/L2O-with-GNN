@@ -1,8 +1,10 @@
 import torch
 
-def network_to_nodes(model):
+# Get cpu or gpu device for training.
+
+def network_to_nodes(model, device="cpu"):
     '''Pass in a neural network model with gradients included'''
-    out = torch.empty(0)
+    out = torch.empty(0).to(device)
 
     for m_key in model._modules:
         m1 = model._modules[m_key]
@@ -33,14 +35,14 @@ def make_offsets(num_nodes_list):
 def network_to_edge(nlist, transpose=True):
     '''Produces PyG adjacency list from list of neuron count, see documentation for shape'''
     offsets = make_offsets(nlist)
-    edge_index = torch.empty(0)
+    edge_index = torch.empty(0, dtype=torch.long)
 
     # Loop through matrix to create edges forward
     for i in range(1, len(nlist)):
         for j in range(nlist[i]): # count row
             for k in range(nlist[i-1]): # counts index / column
                 # Connect each row to corresponding entry of next bias vector
-                new_edge = torch.tensor([[offsets[2 * i - 2] + k + j * nlist[i-1], offsets[2 * i - 1] + j]])
+                new_edge = torch.tensor([[offsets[2 * i - 2] + k + j * nlist[i-1], offsets[2 * i - 1] + j]], dtype=torch.long)
                 edge_index = torch.cat((edge_index, new_edge))
 
 
@@ -49,7 +51,7 @@ def network_to_edge(nlist, transpose=True):
         for k in range(nlist[i-1]): # counts column
             for j in range(nlist[i]): # count row
                 # Connect each column to corresponding entry of previous bias vector
-                new_edge = torch.tensor([[offsets[2 * i - 2] + k + j * nlist[i-1], offsets[2 * i - 3] + k]])
+                new_edge = torch.tensor([[offsets[2 * i - 2] + k + j * nlist[i-1], offsets[2 * i - 3] + k]], dtype=torch.long)
                 edge_index = torch.cat((edge_index, new_edge))
 
 
@@ -68,7 +70,7 @@ def nodes_to_network(model, node_y):
         m_dict = dict()     # initialize empty dictionary
         for p_key in m1._parameters:
             num = torch.numel(m1._parameters[p_key])
-            m_dict[p_key] = node_y[:num]
+            m_dict[p_key] = node_y[:num].reshape(m1._parameters[p_key].shape)
             node_y = node_y[num:]
 
         out[m_key] = m_dict

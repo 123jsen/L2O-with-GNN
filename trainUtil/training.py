@@ -16,7 +16,7 @@ def init_sequence(new_model, unroll_len):
     models_t[0] = new_model
     return models_t
 
-def reset_computational_graph(models_t, new_model, h_dict):
+def reset_model_computational_graph(models_t, new_model):
     # Resets model sequence after training iterations
     # Assigns the starting model to be the prev ending model
 
@@ -31,6 +31,7 @@ def reset_computational_graph(models_t, new_model, h_dict):
 
     models_t[0] = model_new_start
 
+def reset_h_computational_graph(h_dict):
     # Resets computational graph of hidden state
     for m_key in h_dict:
         h_mod = h_dict[m_key]
