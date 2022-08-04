@@ -1,1 +1,1 @@
-from trainUtil.training import *
+from trainUtil.trainingFuncs import *
