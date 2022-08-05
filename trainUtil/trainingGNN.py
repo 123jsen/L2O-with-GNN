@@ -15,7 +15,6 @@ from trainUtil import init_sequence, reset_model_computational_graph, zero_gradi
 
 # Get cpu or gpu device for training.
 device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using {device} device")
 
 from math import ceil
 

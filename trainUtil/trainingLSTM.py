@@ -16,7 +16,6 @@ from math import ceil
 
 # Get cpu or gpu device for training.
 device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using {device} device")
 
 # Constants
 in_size = 28 * 28
