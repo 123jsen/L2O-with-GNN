@@ -3,6 +3,8 @@ This project implements a learned optimizer for neural networks using graph recu
 
 This repo can still be used as a reference for myself and other researchers.
 
+This project is a part of the 2022 Summer Research Internship held by CUHK's Faculty of Engineering.
+
 ## Objective
 Learn to Optimize is a paradigm that aims at meta-training an optimizer to train other optimizees, for example, neural networks. Current implementations use either RNNs or reinforcement learning, and they output the update to parameters, given the current gradient.
 
